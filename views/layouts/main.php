@@ -10,8 +10,8 @@ use yii\bootstrap4\Html;
 
 use yii\helpers\Url;
 AppAsset::register($this);
-// 
-$isAuth = true;
+$isAuth = false;
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -21,6 +21,7 @@ $isAuth = true;
   <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="<?php echo Yii::$app->request->baseUrl; ?>/logo.ico" type="image/x-icon" />
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -31,7 +32,8 @@ $isAuth = true;
     <div class="wrapper">
       <header>
         <a class="logo" href=<?=  Url::to(['site/']);?> title="На главную">
-          <img src="./img/logo.png" alt="" srcset="" />
+        
+          <?= Html::img('@web/img/logo.png', ['alt'=>'На галвную']);?>
           <div class="logo-text">
             <h1>SNEAKERS SHOP</h1>
             <p>Магазин лучших кроссовок</p>
@@ -39,10 +41,9 @@ $isAuth = true;
         </a>
         <div class="icons">
           <a class="cart" href=<?=  Url::to(['site/cart']);?> title="В корзину">
-            <img src="./img/shopping-cart.png" alt="" srcset="" />
-          </a>
-        
-         
+           
+            <?= Html::img('@web/img/shopping-cart.png', ['alt'=>'В корзину']);?>
+          </a>  
           <?php if ($isAuth): ?>
             <a class="avatar" href=<?=  Url::to(['site/profile']);?> title="Профиль">
             H
@@ -51,7 +52,8 @@ $isAuth = true;
             
           <?php if (!$isAuth): ?>
               <a class="user" href=<?=  Url::to(['site/auth']);?> title="Авторизация">
-                <img src="./img/user.png" alt="" />
+               
+                <?= Html::img('@web/img/user.png', ['alt'=>'Авторизация']);?>
               </a>
           <?php endif; ?>
         </div>

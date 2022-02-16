@@ -1,7 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
-
+use yii\bootstrap4\Html;
 $this->title = 'Sneakers shop | корзина';
 ?>
         <div class="cart">
@@ -10,19 +10,21 @@ $this->title = 'Sneakers shop | корзина';
               <h3>Кроссовки Унисекс Adidas Yeezy Boost 350 V2 GID 'Glow'</h3>
               <img src="https://cdn-images.farfetch-contents.com/14/57/28/35/14572835_22281968_480.jpg" alt="" />
               <p>6990 р.</p>
-              <img src="./img/delete.png" alt="" class="icon" id="delete_item">
+    
+              <?= Html::img('@web/img/delete.png', ['alt'=>'Авторизация','class'=>'icon']);?>
             </li>
             <li>
               <h3>Кроссовки Унисекс Adidas Yeezy Boost 350 V2 GID 'Glow'</h3>
               <img src="https://cdn-images.farfetch-contents.com/14/57/28/35/14572835_22281968_480.jpg" alt="" />
               <p>6990 р.</p>
-              <img src="./img/delete.png" alt="" class="icon">
+              <?= Html::img('@web/img/delete.png', ['alt'=>'Авторизация','class'=>'icon']);?>
             </li>
             <li>
               <h3>Кроссовки Унисекс Adidas Yeezy Boost 350 V2 GID 'Glow'</h3>
               <img src="https://cdn-images.farfetch-contents.com/14/57/28/35/14572835_22281968_480.jpg" alt="" />
+              
               <p>6990 р.</p>
-              <img src="./img/delete.png" alt="" class="icon">
+              <?= Html::img('@web/img/delete.png', ['alt'=>'Авторизация','class'=>'icon']);?>
             </li>
           </ul>
           <div class="cart-result">
