@@ -3,20 +3,31 @@
 /** @var yii\web\View $this */
 
 $this->title = 'Sneakers shop | регистрация';
+
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 ?>
         <div class="forms">
           <h2>Аунтефикация</h2>
-          <form action="" id="form-auth">
+          <!-- <form action="" id="form-auth">
             <input type="text" name="" id="" placeholder="Почта" class="input-field" />
             <input type="text" name="" id="" placeholder="Пароль" class="input-field" />
+          
+          </form> -->
+          <?php $form = ActiveForm::begin( ['options' => ['class' => 'form','id'=>"form-auth"]]); ?>
+            <?= $form->field($login_model,'email')->input('email',['class'=>'input-field','placeholder'=>'Почта'])->label('');  ?>
+            <?= $form->field($login_model,'password')->passwordInput(['class'=>'input-field','placeholder'=>'Пароль'])->label(''); ?>
             <input type="submit" name="" id="" title="Войти" value="Войти" class="input-button" />
-          </form>
-          <form action="" id="form-registration">
-            <input type="text" name="" id="" placeholder="Ваша почта" class="input-field" />
-            <input type="text" name="" id="" placeholder="Ваше имя" class="input-field" />
-            <input type="text" name="" id="" placeholder="Ваша фамилия" class="input-field" />
-            <input type="text" name="" id="" placeholder="Пароль" class="input-field" />
-            <input type="text" name="" id="" placeholder="Повторите пароль" class="input-field" />
+          <?php ActiveForm::end(); ?>
+           
+          <?php $form = ActiveForm::begin( ['options' => ['class' => 'form','id'=>'form-registration'],]) ?>
+
+            <?= $form->field($modelReg,'firstname')->textInput(['autofocus'=>true,'class'=>'input-field','placeholder'=>'Имя'])->label('') ?>
+            <?= $form->field($modelReg,'lastname')->textInput(['class'=>'input-field','placeholder'=>'Фамилия'])->label('') ?>
+            <?= $form->field($modelReg,'email')->input('email',['class'=>'input-field','placeholder'=>'Почта'])->label('') ?>
+            <?= $form->field($modelReg,'password')->passwordInput(['class'=>'input-field','placeholder'=>'Пароль'])->label('') ?>
+            <?= $form->field($modelReg,'password_repeat')->passwordInput(['class'=>'input-field','placeholder'=>'Повторите пароль'])->label('') ?>
+            
             <input
               type="submit"
               name=""
@@ -25,7 +36,10 @@ $this->title = 'Sneakers shop | регистрация';
               value="Зарегистрироваться"
               class="input-button"
             />
-          </form>
+       
+                  
+        
+          <?php ActiveForm::end(); ?>
           <div class="switch" onclick="changeFormsState()"><h3></h3></div>
         </div>
         <script>

@@ -5,12 +5,15 @@
 /* @var $content string */
 
 use app\assets\AppAsset;
-
 use yii\bootstrap4\Html;
-
 use yii\helpers\Url;
+
 AppAsset::register($this);
 $isAuth = false;
+
+if(substr($_COOKIE['Auth'],0,4) === 'true'){
+  $isAuth = true;
+}
 
 ?>
 <?php $this->beginPage() ?>
@@ -21,7 +24,7 @@ $isAuth = false;
   <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="<?php echo Yii::$app->request->baseUrl; ?>/logo.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo Yii::$app->request->baseUrl; ?>/logo.ico" type="image/x-icon" />
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -38,10 +41,10 @@ $isAuth = false;
             <h1>SNEAKERS SHOP</h1>
             <p>Магазин лучших кроссовок</p>
           </div>
+ 
         </a>
         <div class="icons">
           <a class="cart" href=<?=  Url::to(['site/cart']);?> title="В корзину">
-           
             <?= Html::img('@web/img/shopping-cart.png', ['alt'=>'В корзину']);?>
           </a>  
           <?php if ($isAuth): ?>

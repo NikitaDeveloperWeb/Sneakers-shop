@@ -10,6 +10,7 @@
 ::selection {
   background: #e7f6ff;
 }
+
 h1,
 h2 {
   font-family: 'Roboto Condensed', sans-serif;
@@ -41,7 +42,10 @@ a:hover {
   color: rgb(69, 161, 214);
   transition: 1s;
 }
-
+.a_but {
+  background-color: #4ea9e2;
+  padding: 10px;
+}
 .wrapper {
   width: 90%;
   padding: 10px;
@@ -339,6 +343,7 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 td img {
   width: 80px;

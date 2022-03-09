@@ -2,13 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\AddProduct;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Login;
+use app\models\Order;
+use app\models\Product;
+use app\models\Signup;
+use app\models\User;
+
 
 class SiteController extends Controller
 {
@@ -63,7 +67,21 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    
 
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
+   public function actionLogout()
+   {  
+ 
+      Yii::$app->user->logout();
+      setcookie("Auth", "");
+      return $this->redirect(['index']);
+  
+   }
     /**
      * Displays about page.
      *
@@ -71,7 +89,31 @@ class SiteController extends Controller
      */
     public function actionAuth()
     {
-        return $this->render('auth');
+      $modelReg = new Signup();
+      $modelReg->typeUser = 'User';
+      if(isset($_POST['Signup'])){
+        $modelReg->attributes = Yii::$app->request->post('Signup'); 
+      }
+      if($modelReg->validate() &&  $modelReg->signup()){
+        return $this->redirect('index');
+      }
+      // auth
+      if(!Yii::$app->user->isGuest)
+      {
+          return $this->redirect('panel');
+      }
+      $login_model = new Login();
+      if(Yii::$app->request->post('Login') )
+      {
+        $login_model->attributes = Yii::$app->request->post('Login');
+        if($login_model->validate())
+        {
+          setcookie("Auth", "true");  
+          Yii::$app->user->login($login_model->getUser());  
+          return $this->redirect('panel');
+        };
+      }
+        return $this->render('auth',['modelReg'=>$modelReg,'login_model'=>$login_model]);
     }
         /**
      * Displays about page.
@@ -81,6 +123,22 @@ class SiteController extends Controller
     public function actionCart()
     {
         return $this->render('cart');
+    }
+            /**
+     * Displays about page.
+     *
+     * @return string
+     */
+    public function actionProduct()
+    {    
+      $modelAddProd  = new AddProduct();
+      if(isset($_POST['AddProduct'])){
+        $modelAddProd->attributes = Yii::$app->request->post('AddProduct'); 
+      }
+      if($modelAddProd->validate() &&  $modelAddProd->addProduct()){
+        return $this->redirect('panel');
+      }
+        return $this->render('product',['modelAddProd'=>$modelAddProd]);
     }
         /**
      * Displays about page.
@@ -98,7 +156,8 @@ class SiteController extends Controller
      * @return string
      */
     public function actionPanel()
-    {
+    { 
+        Product::find()->all(); 
         return $this->render('panel');
     }
         /** Displays about page.
@@ -108,5 +167,41 @@ class SiteController extends Controller
     public function actionProfile()
     {
         return $this->render('profile');
+    }
+    
+    public function  actionEditeuser($id)
+    {
+      $model = User::findOne($id);
+      if($model){
+        $model->update();
+      }
+        return $this->redirect(['profile','id'=>$id]);
+    }
+
+    public function  actionDeleteuser($id)
+    {
+      $model = User::findOne($id);
+      if($model){
+        $model->delete();
+      }
+        return $this->redirect(['panel','id'=>$id]);
+    }
+
+    public function  actionDeleteprod($id)
+    {
+      $model = Product::findOne($id);
+      if($model){
+        $model->delete();
+      }
+        return $this->redirect(['panel','id'=>$id]);
+    }
+
+    public function  actionDeleteord($id)
+    {
+      $model = Order::findOne($id);
+      if($model){
+        $model->delete();
+      }
+        return $this->redirect(['panel','id'=>$id]);
     }
 }

@@ -1,7 +1,7 @@
 <?php
-
+use yii\helpers\Url;
 /** @var yii\web\View $this */
-
+use yii\bootstrap4\Html;
 $this->title = 'Sneakers shop | профиль';
 ?>
         <div class="profile">
@@ -13,14 +13,20 @@ $this->title = 'Sneakers shop | профиль';
         </div>
         <div class="panel">
           <div class="widget">
-            <button onclick="changeFormsState()">Редактировать</button>
+            <!-- <button onclick="changeFormsState()">Редактировать</button>
             <form action="">
               <input type="text" class="input-field" value="Никита" />
               <input type="text" class="input-field" value="Русаков" />
               <input type="text" class="input-field" value="rusakdeveloper@gmail.com" />
               <input type="submit" class="input-button" value="Редакировать" />
-            </form>
+            </form> -->
           </div>
+          <?= Html::beginForm(['/site/logout'], 'post')
+                            . Html::submitButton(
+                                'Выход',
+                                ['class' => 'btn btn-link logout', 'style'=>"padding-top:10px;"]
+                            )
+                            . Html::endForm() ?>
         </div>
       </main>
       <script>

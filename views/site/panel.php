@@ -1,7 +1,13 @@
 <?php
 
 /** @var yii\web\View $this */
+
+use app\models\Order;
+use app\models\Product;
+use app\models\ProductOrder;
 use yii\bootstrap4\Html;
+use app\models\User;
+use yii\helpers\Url;
 $this->title = 'Sneakers shop | административная панель';
 ?>
         <h2>Панель управления</h2>
@@ -10,55 +16,87 @@ $this->title = 'Sneakers shop | административная панель';
             <button onclick="changeProduct()">Товары</button>
             <button onclick="changeUser()">Пользователи</button>
             <button onclick="changeOrder()">Заказы</button>
+           
           </aside>
           <div class="panels_data">
             <div class="users">
+            <?php $usersAll=User::find()->all() ?>
+
               <table>
+              <?  foreach($usersAll as $us ) {
+              $id = $us['id'];
+             
+              ?>
                 <tr>
-                  <td><strong>ID:</strong> 1</td>
-                  <td><strong>Имя:</strong> Никита</td>
-                  <td><strong>Фамилия:</strong> Русаков</td>
-                  <td><strong>Почта:</strong> rusakdeveloper@gmail.com</td>
-                  <td>  <?= Html::img('@web/img/delete.png', ['alt'=>'Авторизация','class'=>'icon']);?></td>
+                  <td><strong>ID:</strong><?=$us['id']  ?></td>
+                  <td><strong>Имя:</strong> <?=$us['firstname']  ?></td>
+                  <td><strong>Фамилия:</strong>  <?= $us['lastname'] ?></td>
+                  <td><strong>Почта:</strong>  <?=$us['email']?></td>
+                  <td>   <a  href="<?=  Url::to(['site/deleteuser/','id'=>$id]);?>"><?= Html::img('@web/img/delete.png', ['alt'=>'Удалить','class'=>'icon']);?></a></td>
                 </tr>
-               
+                <? }?>
               </table>
             </div>
             <div class="products">
+            <?php $prodAll=Product::find()->all() 
+           ?>
+            <a class="" href=<?=  Url::to(['site/product']);?> title="Добавить продукт">Добавить товар</a>
               <table>
+                
+              <?  foreach($prodAll as $prod ) { 
+                  $id = $prod['ID']; ?>
                 <tr>
-                  <td><strong>ID:</strong> 1</td>
+                  <td><strong>ID:</strong> <?=$prod['ID']  ?></td>
                   <td>
-                    <strong>Название:</strong> Кроссовки Унисекс Adidas Yeezy Boost 350 V2 GID
-                    'Glow'
+                    <strong>Название:</strong> <?=$prod['TITLE']  ?>
                   </td>
-                  <td><strong>Цена:</strong> 6990 р.</td>
+                  <td><strong>Цена:</strong> <?=$prod['PRISE']  ?> р.</td>
                   <td>
                     <strong>Изображение:</strong>
                     <img
-                      src="https://cdn-images.farfetch-contents.com/14/57/28/35/14572835_22281968_480.jpg"
+                      src=<?=$prod['IMAGE']  ?>
                       alt=""
                     />
                   </td>
-                  <td>  <?= Html::img('@web/img/delete.png', ['alt'=>'Авторизация','class'=>'icon']);?></td>
+                  <td>   <a  href="<?=  Url::to(['site/deleteprod/','id'=>$id]);?>"><?= Html::img('@web/img/delete.png', ['alt'=>'Удалить','class'=>'icon']);?></a></td>
                 </tr>
-               
+                <? }?>
               </table>
             </div>
             <div class="orders">
+            <?php 
+              $orderAll= Order::find()->all(); ?>
               <table>
-               
+           <?     foreach($orderAll as $order ) { 
+                  $id = $order['id']; 
+                  $prodOrder = ProductOrder::find()->where(['order_ID' => $order['id']])->all();
+                  $customer = User::findOne($order['id_user']);
+                  $prod = [];
+                  foreach ($prodOrder as $pr) {
+                    if($pr['order_ID'] === $id){
+                      array_push($prod,$pr['product_ID']);
+                    }
+                  } 
+          ?>
                 <tr>
-                  <td><strong>ID:</strong> 1</td>
-                  <td><strong>Заказчик:</strong> Никита Русаков</td>
+                  <td><strong>ID:</strong><?=$order['id'] ?></td>
+                  <td><strong>Заказчик:</strong><?=$customer['firstname'] . ' ' . $customer['lastname'] ?></td>
                   <td>
-                    <strong>Товары:</strong> Кроссовки Унисекс Adidas Yeezy Boost 350 V2 GID
-                    'Glow'
+                    <strong>Товары:</strong>
+                  <?    
+                    foreach ($prod as $product) {
+                      $title = Product::find()->where(['ID' => $product])->one();
+                    
+                    
+                 ?>
+                 <p><?= $title['TITLE'] ?></p>
+                 <?}?>
                   </td>
-                  <td><strong>Сумма:</strong> 6990 р.</td>
-                  <td><strong>Дата:</strong> 24.02.2022г.</td>
-                  <td>  <?= Html::img('@web/img/delete.png', ['alt'=>'Авторизация','class'=>'icon']);?></td>
+                  <td><strong>Сумма:</strong> <?=$order['summa'] ?> р.</td>
+                  <td><strong>Дата:</strong> <?=$order['date'] ?></td>
+                  <td>   <a  href="<?=  Url::to(['site/deleteord/','id'=>$id]);?>"><?= Html::img('@web/img/delete.png', ['alt'=>'Удалить','class'=>'icon']);?></a></td>
                 </tr>
+                <? }?>
               </table>
             </div>
           </div>
