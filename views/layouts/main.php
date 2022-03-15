@@ -14,7 +14,8 @@ $isAuth = false;
 if(substr($_COOKIE['Auth'],0,4) === 'true'){
   $isAuth = true;
 }
-
+$userModel = Yii::$app->user->identity;
+$name = $userModel['firstname'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -44,15 +45,20 @@ if(substr($_COOKIE['Auth'],0,4) === 'true'){
  
         </a>
         <div class="icons">
-          <a class="cart" href=<?=  Url::to(['site/cart']);?> title="В корзину">
+          <!-- <a class="cart" href=<?=  Url::to(['site/cart']);?> title="В корзину">
             <?= Html::img('@web/img/shopping-cart.png', ['alt'=>'В корзину']);?>
-          </a>  
-          <?php if ($isAuth): ?>
+          </a>   -->
+          <?php echo \app\components\CartWidget::widget();?>
+          <?php if ($isAuth && $userModel['typeUser'] === 'User'): ?>
             <a class="avatar" href=<?=  Url::to(['site/profile']);?> title="Профиль">
-            H
+            <?=mb_substr($name, 0, 1) ?>
           </a>
           <?php endif; ?>
-            
+          <?php if ($isAuth && $userModel['typeUser'] === 'Admin'): ?>
+            <a class="avatar" href=<?=  Url::to(['site/panel']);?> title="Панель">
+            <?=mb_substr($name, 0, 1) ?>
+          </a>
+          <?php endif; ?>
           <?php if (!$isAuth): ?>
               <a class="user" href=<?=  Url::to(['site/auth']);?> title="Авторизация">
                

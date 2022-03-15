@@ -1,7 +1,10 @@
 <?php
 use yii\helpers\Url;
-/** @var yii\web\View $this */
+use app\models\ProductOrder;
+use app\models\Order;
+use app\models\Product;
 use yii\bootstrap4\Html;
+use app\models\User;
 $this->title = 'Sneakers shop | профиль';
 ?>
         <div class="profile">
@@ -28,6 +31,46 @@ $this->title = 'Sneakers shop | профиль';
                             )
                             . Html::endForm() ?>
         </div>
+        <div class="orders">
+          <h2>Мои заказы:</h2>
+            <?php 
+              $userModel = Yii::$app->user->identity;
+              $orderAll= Order::find()->where(['id_user' => $userModel['id']])->all();
+              
+              ?>
+              <table>
+           <?     foreach($orderAll as $order ) { 
+                  $id = $order['id']; 
+                  $prodOrder = ProductOrder::find()->where(['order_ID' => $order['id']])->all();
+                  $customer = User::findOne($order['id_user']);
+                  $prod = [];
+                  foreach ($prodOrder as $pr) {
+                    if($pr['order_ID'] === $id){
+                      array_push($prod,$pr['product_ID']);
+                    }
+                  } 
+          ?>
+                <tr>
+                  <td><strong>ID:</strong><?=$order['id'] ?></td>
+                  <td><strong>Заказчик:</strong><?=$customer['firstname'] . ' ' . $customer['lastname'] ?></td>
+                  <td>
+                    <strong>Товары:</strong>
+                  <?    
+                    foreach ($prod as $product) {
+                      $title = Product::find()->where(['ID' => $product])->one();
+                      $count = ProductOrder::find()->where(['order_ID' => $id,'product_ID'=>$product])->one();
+                      // print_r( $count)
+                 ?>
+                <span style="display: flex;justify-content:space-around;"> <p > <?= $title['title'] ?> <em style="color:blue"> Х </em> <?=  $count['count_prod']?></p></span>
+                 <?}?>
+                  </td>
+                  <td><strong>Сумма:</strong> <?=$order['summa'] ?> р.</td>
+                  <td><strong>Дата:</strong> <?=$order['date'] ?></td>
+                  <td>   <a  href="<?=  Url::to(['site/deleteord/','id'=>$id]);?>"><?= Html::img('@web/img/delete.png', ['alt'=>'Удалить','class'=>'icon']);?></a></td>
+                </tr>
+                <? }?>
+              </table>
+            </div>
       </main>
       <script>
         //_____________________________________________________________________________________

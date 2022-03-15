@@ -16,7 +16,12 @@ $this->title = 'Sneakers shop | административная панель';
             <button onclick="changeProduct()">Товары</button>
             <button onclick="changeUser()">Пользователи</button>
             <button onclick="changeOrder()">Заказы</button>
-           
+            <?= Html::beginForm(['/site/logout'], 'post')
+                            . Html::submitButton(
+                                'Выход',
+                                ['class' => 'btn btn-link logout', 'style'=>"padding-top:10px;"]
+                            )
+                            . Html::endForm() ?>
           </aside>
           <div class="panels_data">
             <div class="users">
@@ -44,17 +49,17 @@ $this->title = 'Sneakers shop | административная панель';
               <table>
                 
               <?  foreach($prodAll as $prod ) { 
-                  $id = $prod['ID']; ?>
+                  $id = $prod['id']; ?>
                 <tr>
-                  <td><strong>ID:</strong> <?=$prod['ID']  ?></td>
+                  <td><strong>id:</strong> <?=$prod['id']  ?></td>
                   <td>
-                    <strong>Название:</strong> <?=$prod['TITLE']  ?>
+                    <strong>Название:</strong> <?=$prod['title']  ?>
                   </td>
-                  <td><strong>Цена:</strong> <?=$prod['PRISE']  ?> р.</td>
+                  <td><strong>Цена:</strong> <?=$prod['prise']  ?> р.</td>
                   <td>
                     <strong>Изображение:</strong>
                     <img
-                      src=<?=$prod['IMAGE']  ?>
+                      src=<?=$prod['image']  ?>
                       alt=""
                     />
                   </td>
@@ -86,10 +91,10 @@ $this->title = 'Sneakers shop | административная панель';
                   <?    
                     foreach ($prod as $product) {
                       $title = Product::find()->where(['ID' => $product])->one();
-                    
-                    
+                      $count = ProductOrder::find()->where(['order_ID' => $id,'product_ID'=>$product])->one();
+                      // print_r( $count)
                  ?>
-                 <p><?= $title['TITLE'] ?></p>
+                <span style="display: flex;justify-content:space-around;"> <p > <?= $title['title'] ?> <em style="color:blue"> Х </em> <?=  $count['count_prod']?></p></span>
                  <?}?>
                   </td>
                   <td><strong>Сумма:</strong> <?=$order['summa'] ?> р.</td>

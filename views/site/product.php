@@ -14,6 +14,7 @@ use yii\helpers\Url;
 
             <?= $form->field($modelAddProd,'title')->textInput(['autofocus'=>true,'class'=>'input-field','placeholder'=>'Наименование'])->label('') ?>
             <?= $form->field($modelAddProd,'prise')->textInput(['class'=>'input-field','placeholder'=>'Цена'])->label('') ?>
+            <?= $form->field($modelAddProd,'count')->textInput(['class'=>'input-field','placeholder'=>'Кол-во'])->label('') ?>
             <?= $form->field($modelAddProd,'img')->textInput(['class'=>'input-field','placeholder'=>'Изображение'])->label('') ?>
             <input
               type="submit"
